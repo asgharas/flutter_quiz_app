@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Question {
   int id;
   String question;
@@ -99,3 +101,7 @@ class CorrectAnswers {
     );
   }
 }
+
+
+List<Question> questionsFromJson(String str) =>
+    List<Question>.from(json.decode(str).map((x) => Question.fromJson(x)));

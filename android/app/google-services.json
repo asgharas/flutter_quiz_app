@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "104302845009",
+    "project_id": "mad-app-final-assignment",
+    "storage_bucket": "mad-app-final-assignment.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:104302845009:android:8bb5caf1eb769be4f02c70",
+        "android_client_info": {
+          "package_name": "com.example.mad_quiz_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzf8Iwjs5KmFkc1JL0RgrImk2CAcjKxXU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

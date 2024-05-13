@@ -1,0 +1,21 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "mad-app-final-assignment",
+                    "appId": "1:104302845009:android:8bb5caf1eb769be4f02c70",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "mad-app-final-assignment",
+                    "configurations": {
+                        "android": "1:104302845009:android:8bb5caf1eb769be4f02c70"
+                    }
+                }
+            }
+        }
+    }
+}

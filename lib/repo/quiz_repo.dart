@@ -15,7 +15,7 @@ class QuizRepo {
     return await _apiService.getCategories();
   }
 
-  Future<List<Question>> getQuestions() async {
-    return await _apiService.getQuestions();
+  Future<List<Question>> getQuestions(String category, String difficulty) async {
+    return await _apiService.getQuestions(category, difficulty);
   }
 }

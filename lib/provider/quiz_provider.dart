@@ -7,6 +7,10 @@ import 'package:mad_quiz_app/repo/quiz_repo.dart';
 class QuizProvider extends ChangeNotifier {
   final _repo = QuizRepo();
 
+
+  final _pageController = PageController();
+  get pageController => _pageController;
+
   var _tags = <Tag>[];
   get tags => _tags;
 
@@ -16,26 +20,40 @@ class QuizProvider extends ChangeNotifier {
   var _questions = <Question>[];
   get questions => _questions;
 
-  var _selectedAnswers = <String>[];
-  get selectedAnswers => _selectedAnswers;
+  var _allAnswers = <bool>[];
 
-  void addSelectedAnswer(String answer) {
-    _selectedAnswers.add(answer);
+  var _selectedQuestionIndex = 0;
+  get selectedQuestionIndex => _selectedQuestionIndex;
+
+  QuizProvider() {
+    _getTags();
+    _getCategories();
+  }
+
+  void addSelectedAnswer(bool answer) {
+    _allAnswers.add(answer);
     notifyListeners();
   }
 
-  void getTags() async {
+  void _getTags() async {
     _tags = await _repo.getTags();
     notifyListeners();
   }
 
-  void getCategories() async {
+  void _getCategories() async {
     _categories = await _repo.getCategories();
     notifyListeners();
   }
 
-  void getQuestions() async {
-    _questions = await _repo.getQuestions();
+  Future<void> _getQuestions(String category, String difficulty) async {
+    _questions = await _repo.getQuestions(category, difficulty);
     notifyListeners();
+  }
+
+  Future<void> startQuiz(String category, String difficulty) async {
+    _allAnswers = [];
+    await _getQuestions(category, difficulty);
+    notifyListeners();
+    _pageController.jumpToPage(1);
   }
 }

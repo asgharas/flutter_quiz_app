@@ -1,8 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:mad_quiz_app/firebase_options.dart';
 import 'package:mad_quiz_app/provider/quiz_provider.dart';
+import 'package:mad_quiz_app/views/app.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MainApp());
 }
 
@@ -11,13 +19,13 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: ChangeNotifierProvider(
+    return ChangeNotifierProvider(
         create: (context) => QuizProvider(),
-        child: Scaffold(
-          body: ,
-        ),
-      ),
-    );
+        child: MaterialApp(
+            theme: ThemeData(
+              primaryColor: Colors.deepPurple,
+              // colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepPurple),
+            ),
+            home: const App()));
   }
 }

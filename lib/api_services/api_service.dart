@@ -32,9 +32,15 @@ class ApiService {
   }
 
   // get questions
-  Future<List<Question>> getQuestions() async {
-    final response = await http.get(Uri.parse("$_baseUrl$_questionsEndpoint"),
-        headers: {"X-Api-Key": _apiKey});
+  Future<List<Question>> getQuestions(
+      String category, String difficulty) async {
+    final response =
+        await http.get(Uri.parse("$_baseUrl$_questionsEndpoint"), headers: {
+      "X-Api-Key": _apiKey,
+      "category": category,
+      "difficulty": difficulty,
+      "limit": "10"
+    });
     if (response.statusCode == 200) {
       return questionsFromJson(response.body);
     } else {

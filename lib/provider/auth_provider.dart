@@ -5,6 +5,9 @@ class MyAuthProvider extends ChangeNotifier {
   var _isLoggedIn = false;
   get isLoggedIn => _isLoggedIn;
 
+  var _currentUser = FirebaseAuth.instance.currentUser;
+  get currentUser => _currentUser;
+
   var _email = "";
   get email => _email;
 
@@ -18,6 +21,7 @@ class MyAuthProvider extends ChangeNotifier {
     FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user != null) {
         _isLoggedIn = true;
+        _currentUser = user;
       } else {
         _isLoggedIn = false;
       }
@@ -41,7 +45,7 @@ class MyAuthProvider extends ChangeNotifier {
         email: _email,
         password: _password,
       );
-      showSnackbar("Login successful");
+      showSnackbar("Login successful.");
     } catch (e) {
       // show snackbar
       showSnackbar(e.toString());
@@ -54,7 +58,7 @@ class MyAuthProvider extends ChangeNotifier {
         email: _email,
         password: _password,
       );
-      showSnackbar("Sign up successful, now login.");
+      showSnackbar("Sign up successful.");
     } catch (e) {
       // show snackbar
       showSnackbar(e.toString());
@@ -63,5 +67,6 @@ class MyAuthProvider extends ChangeNotifier {
 
   Future<void> logout() async {
     await FirebaseAuth.instance.signOut();
+
   }
 }

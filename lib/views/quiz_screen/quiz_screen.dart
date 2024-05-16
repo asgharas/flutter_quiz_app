@@ -55,10 +55,15 @@ class _QuizScreenState extends State<QuizScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Quiz"),
-          actions: [Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text("Q# $currentQuestionString", style: const TextStyle(fontSize: 20),),
-          )],
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Q# $currentQuestionString",
+                style: const TextStyle(fontSize: 20),
+              ),
+            )
+          ],
         ),
         body: Consumer<QuizProvider>(builder: (context, state, child) {
           return PageView(
@@ -112,9 +117,15 @@ class _QuizScreenState extends State<QuizScreen> {
                                     });
                                     state
                                         .startQuiz(
-                                            widget.tag,
-                                            difficulties[
-                                                selectedDifficultyIndex])
+                                            category: widget.tag,
+                                            difficulty: difficulties[
+                                                selectedDifficultyIndex],
+                                            showSnackbar: (msg) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(const SnackBar(
+                                                      content: Text(
+                                                          "Quiz started.")));
+                                            })
                                         .then((value) {
                                       setState(() {
                                         currentQuestionString = value;
@@ -164,8 +175,9 @@ class _QuizScreenState extends State<QuizScreen> {
                     },
                     isLastQuestion: state.questions.indexOf(question) ==
                         state.questions.length - 1,
-                    onFinish: (isCorrect) {
-                      state.nextQuestion(isCorrect);
+                    onFinish: (isCorrect) async {
+                      await state.nextQuestion(isCorrect);
+                      state.finishQuiz();
                       setState(() {
                         currentQuestionString = "";
                       });

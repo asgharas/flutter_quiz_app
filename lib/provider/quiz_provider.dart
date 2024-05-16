@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mad_quiz_app/models/category.dart';
 import 'package:mad_quiz_app/models/question.dart';
@@ -6,6 +7,7 @@ import 'package:mad_quiz_app/repo/quiz_repo.dart';
 
 class QuizProvider extends ChangeNotifier {
   final _repo = QuizRepo();
+  final _auth = FirebaseAuth.instance;
 
   final _pageController = PageController();
   get pageController => _pageController;
@@ -56,12 +58,17 @@ class QuizProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _getQuestions(String category, String difficulty) async {
-    _questions = await _repo.getQuestions(category, difficulty);
-    notifyListeners();
+  Future<void> _getQuestions(
+      String category, String difficulty, Function(String) showSnackbar) async {
+    try {
+      _questions = await _repo.getQuestions(category, difficulty);
+      notifyListeners();
+    } catch (e) {
+      showSnackbar(e.toString());
+    }
   }
 
-  void nextQuestion(bool wasPreviousCorrect) {
+  Future<void> nextQuestion(bool wasPreviousCorrect) async {
     if (wasPreviousCorrect) {
       _score++;
       notifyListeners();
@@ -70,15 +77,25 @@ class QuizProvider extends ChangeNotifier {
         duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
   }
 
-  Future<String> startQuiz(String category, String difficulty) async {
+
+
+  Future<String> startQuiz(
+      {required String category,
+      required String difficulty,
+      required Null Function(dynamic msg) showSnackbar}) async {
     _currentTopic = category;
     _currentDifficulty = difficulty;
     _quizLoading = true;
     _allAnswers = [];
-    await _getQuestions(category, difficulty);
+    await _getQuestions(category, difficulty, showSnackbar);
     notifyListeners();
     _quizLoading = false;
     _pageController.jumpToPage(1);
     return "1/${_questions.length}";
+  }
+
+  Future<void> finishQuiz() async {
+    var userId = _auth.currentUser?.uid;
+    if(userId != null) _repo.saveScore(userId, _score, _currentTopic, _currentDifficulty);
   }
 }

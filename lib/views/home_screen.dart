@@ -19,15 +19,15 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           const Text("Choose Quiz Category", style: TextStyle(fontSize: 20)),
           Expanded(
-            child: state.tags.length <= 0
+            child: state.categories.length <= 0
                 ? const Center(child: CircularProgressIndicator())
                 : GridView.count(
-                    crossAxisCount: 3,
+                    crossAxisCount: 2,
                     mainAxisSpacing: 4,
                     crossAxisSpacing: 4,
                     primary: false,
                     padding: const EdgeInsets.all(8),
-                    children: state.tags
+                    children: state.categories
                         .map<Widget>((tag) => Card(
                               color:
                                   Theme.of(context).primaryColor.withAlpha(200),
@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Text(tag.name,
                                       style: const TextStyle(
                                         color: Colors.white,
-                                        fontSize: 16,
+                                        fontSize: 20,
                                       )),
                                 ),
                               ),

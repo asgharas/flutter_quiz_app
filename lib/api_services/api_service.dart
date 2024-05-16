@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:mad_quiz_app/models/category.dart';
 import 'package:mad_quiz_app/models/question.dart';
@@ -34,13 +36,12 @@ class ApiService {
   // get questions
   Future<List<Question>> getQuestions(
       String category, String difficulty) async {
-    final response =
-        await http.get(Uri.parse("$_baseUrl$_questionsEndpoint"), headers: {
-      "X-Api-Key": _apiKey,
-      "category": category,
-      "difficulty": difficulty,
-      "limit": "10"
-    });
+    final response = await http.get(
+        Uri.parse(
+            "$_baseUrl$_questionsEndpoint?category=$category&limit=10&difficulty=$difficulty"),
+        headers: {
+          "X-Api-Key": _apiKey,
+        });
     if (response.statusCode == 200) {
       return questionsFromJson(response.body);
     } else {

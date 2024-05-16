@@ -7,9 +7,11 @@ import 'package:mad_quiz_app/repo/quiz_repo.dart';
 class QuizProvider extends ChangeNotifier {
   final _repo = QuizRepo();
 
-
   final _pageController = PageController();
   get pageController => _pageController;
+
+  var _quizLoading = false;
+  get quizLoading => _quizLoading;
 
   var _tags = <Tag>[];
   get tags => _tags;
@@ -24,6 +26,15 @@ class QuizProvider extends ChangeNotifier {
 
   var _selectedQuestionIndex = 0;
   get selectedQuestionIndex => _selectedQuestionIndex;
+
+  var _score = 0;
+  get score => _score;
+
+  var _currentTopic = "";
+  get currentTopic => _currentTopic;
+
+  var _currentDifficulty = "";
+  get currentDifficulty => _currentDifficulty;
 
   QuizProvider() {
     _getTags();
@@ -50,10 +61,24 @@ class QuizProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> startQuiz(String category, String difficulty) async {
+  void nextQuestion(bool wasPreviousCorrect) {
+    if (wasPreviousCorrect) {
+      _score++;
+      notifyListeners();
+    }
+    _pageController.nextPage(
+        duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+  }
+
+  Future<String> startQuiz(String category, String difficulty) async {
+    _currentTopic = category;
+    _currentDifficulty = difficulty;
+    _quizLoading = true;
     _allAnswers = [];
     await _getQuestions(category, difficulty);
     notifyListeners();
+    _quizLoading = false;
     _pageController.jumpToPage(1);
+    return "1/${_questions.length}";
   }
 }

@@ -21,9 +21,10 @@ class QuizRepo {
     return await _apiService.getQuestions(category, difficulty);
   }
 
-  Future<void> saveScore(String userId, int score, String category, String difficulty) async {
+  Future<void> saveScore(String userId, String email, int score, String category, String difficulty) async {
     await firestore.collection('scores').add({
       'userId': userId,
+      'email': email,
       'score': score,
       'category': category,
       'difficulty': difficulty,

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mad_quiz_app/firebase_options.dart';
 import 'package:mad_quiz_app/provider/auth_provider.dart';
+import 'package:mad_quiz_app/provider/leaderboard_provider.dart';
 import 'package:mad_quiz_app/provider/quiz_provider.dart';
 import 'package:mad_quiz_app/views/app.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,7 @@ class MainApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (context) => QuizProvider()),
           ChangeNotifierProvider(create: (context) => MyAuthProvider()),
+          ChangeNotifierProvider(create: (context) => LeaderboardProvider()),
         ],
         child: MaterialApp(
             theme: ThemeData(

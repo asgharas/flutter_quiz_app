@@ -96,6 +96,7 @@ class QuizProvider extends ChangeNotifier {
 
   Future<void> finishQuiz() async {
     var userId = _auth.currentUser?.uid;
-    if(userId != null) _repo.saveScore(userId, _score, _currentTopic, _currentDifficulty);
+    var email = _auth.currentUser?.email;
+    if(userId != null && email != null) _repo.saveScore(userId, email, _score, _currentTopic, _currentDifficulty);
   }
 }
